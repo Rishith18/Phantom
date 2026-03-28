@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export default function TechStack() {
+  const basePath = process.env.NODE_ENV === "production" ? "/Phantom" : "";
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 30 }}
@@ -34,13 +35,11 @@ export default function TechStack() {
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           className="flex justify-center"
         >
-          <Image
-            src="/architecture.png"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${basePath}/architecture.png`}
             alt="Phantom architecture diagram showing the flow from User through Audio/Video Input, Meta DAT SDK, Gemini Live, OpenClaw, and Voice Agent"
-            width={900}
-            height={600}
             className="w-full h-auto"
-            priority={false}
           />
         </motion.div>
       </div>
