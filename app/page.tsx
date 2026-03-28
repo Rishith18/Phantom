@@ -3,6 +3,7 @@ import Mission from "@/components/Mission";
 import ConfidenceSpectrum from "@/components/ConfidenceSpectrum";
 import Vision from "@/components/Vision";
 import TechStack from "@/components/TechStack";
+import VideoDemos from "@/components/VideoDemos";
 import Team from "@/components/Team";
 import Footer from "@/components/Footer";
 
@@ -23,6 +24,7 @@ export default function Home() {
         <ConfidenceSpectrum />
         <Vision />
         <TechStack />
+        <VideoDemos />
         <Team />
         <Footer />
         </div>

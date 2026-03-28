@@ -20,7 +20,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Phantom — AI that acts before you ask",
   description:
-    "Phantom is an ambient AI system that sees the world through your glasses and acts on your behalf — silently, proactively, and only when it's confident you'd want it to.",
+    "Phantom is an AI life assistant built on OpenClaw and Meta Ray-Ban glasses that passively watches your world and takes action on your behalf — without you having to ask.",
 };
 
 export default function RootLayout({

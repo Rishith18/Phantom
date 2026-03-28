@@ -23,9 +23,9 @@ const CONFIG = {
   ringBandWidth: 0.30,
   ringSpringForce: 0.0006,
   ringRotationSpeed: 0.0008,
-  homeForce: 0.0003,
-  mouseRepelRadius: 120,
-  mouseRepelForce: 0.015,
+  homeForce: 0.008,
+  mouseRepelRadius: 200,
+  mouseRepelForce: 0.25,
   dampingFactor: 0.985,
 } as const;
 
