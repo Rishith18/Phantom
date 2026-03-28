@@ -27,13 +27,14 @@ function ArchitectureDiagram() {
   const yTop = 26;
   const yGem = yTop + h + 18;
   const yOpen = yGem + h + 18;
-  const yCloud = yOpen + h + 16;
 
   const midYTop = yTop + h / 2;
   const midOpen = yOpen + h / 2;
 
+  const yExternal = yOpen + h + 18;
+
   const vbW = c3 + w + pad;
-  const vbH = yCloud + 62 + pad;
+  const vbH = yExternal + h + pad + 12;
 
   return (
     <figure className="w-full flex justify-center" aria-label="System architecture flow">
@@ -59,7 +60,7 @@ function ArchitectureDiagram() {
           <path d={`M${c2 + w} ${midYTop} H${c3}`} />
           <path d={`M${cx3} ${yTop + h} V${yGem}`} />
           <path d={`M${cx3} ${yGem + h} V${yOpen}`} />
-          <path d={`M${cx3} ${yOpen + h} V${yCloud}`} />
+          <path d={`M${cx3} ${yOpen + h} V${yExternal}`} />
           <path d={`M${c3} ${midOpen} H${c1 + w}`} />
           <path d={`M${cx1} ${yOpen} V${yTop + h}`} />
         </g>
@@ -71,17 +72,7 @@ function ArchitectureDiagram() {
           <rect x={c3} y={yGem} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
           <rect x={c3} y={yOpen} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
           <rect x={c1} y={yOpen} width={w} height={h} rx={rx} fill={fill} stroke={accent} strokeWidth="1.5" strokeOpacity="0.55" />
-        </g>
-
-        {/* Cloud — sized to fit label */}
-        <g transform={`translate(${cx3 - 78}, ${yCloud})`}>
-          <path
-            d="M78 28c-6 0-11-4-13-9-8 0-14-6-14-13s6-13 14-13h62c9 0 16 7 16 15 0 6-3 11-8 13 1 2 2 5 2 8 0 9-7 16-16 16H78z"
-            fill={fill}
-            stroke={strokeStrong}
-            strokeWidth="1"
-            filter="url(#arch-soft)"
-          />
+          <rect x={c3} y={yExternal} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
         </g>
 
         <g fontFamily="system-ui, -apple-system, sans-serif" fontWeight="600" fill={text} textAnchor="middle">
@@ -113,7 +104,7 @@ function ArchitectureDiagram() {
           <text x={cx1} y={yOpen + h / 2 + 4} fontSize="11">
             Voice Agent
           </text>
-          <text x={cx3} y={yCloud + 36} fontSize="10.5">
+          <text x={cx3} y={yExternal + h / 2 + 4} fontSize="11">
             External Apps
           </text>
         </g>
