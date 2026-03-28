@@ -7,6 +7,8 @@ interface Particle {
   y: number;
   vx: number;
   vy: number;
+  homeX: number;
+  homeY: number;
   homeAngle: number;
   homeRadius: number;
   isRing: boolean;
@@ -18,15 +20,16 @@ const CONFIG = {
   backgroundColor: "#F5F0EB",
   connectionDistance: 110,
   connectionLineWidth: 0.6,
-  maxVelocity: 0.25,
+  maxVelocity: 3.0,
   ringRadiusFactor: 0.33,
   ringBandWidth: 0.30,
   ringSpringForce: 0.0006,
   ringRotationSpeed: 0.0008,
   homeForce: 0.008,
-  mouseRepelRadius: 200,
-  mouseRepelForce: 0.25,
-  dampingFactor: 0.985,
+  mouseRepelRadius: 250,
+  mouseRepelForce: 3.5,
+  dampingFactor: 0.97,
+  returnForce: 0.02,
 } as const;
 
 function clampVelocity(v: number): number {
@@ -67,10 +70,12 @@ function createParticles(
     particles.push({
       x,
       y,
+      homeX: x,
+      homeY: y,
       homeAngle,
       homeRadius,
-      vx: (Math.random() - 0.5) * CONFIG.maxVelocity * 0.5,
-      vy: (Math.random() - 0.5) * CONFIG.maxVelocity * 0.5,
+      vx: (Math.random() - 0.5) * 0.12,
+      vy: (Math.random() - 0.5) * 0.12,
       isRing,
     });
   }
@@ -136,13 +141,18 @@ export default function ParticleCanvas() {
         p.vy += (homeY - p.y) * CONFIG.homeForce;
       }
 
+      if (!p.isRing) {
+        p.vx += (p.homeX - p.x) * CONFIG.returnForce;
+        p.vy += (p.homeY - p.y) * CONFIG.returnForce;
+      }
+
       if (mouse) {
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < CONFIG.mouseRepelRadius && dist > 0) {
-          const force =
-            CONFIG.mouseRepelForce * (1 - dist / CONFIG.mouseRepelRadius);
+          const norm = dist / CONFIG.mouseRepelRadius;
+          const force = CONFIG.mouseRepelForce * (1 - norm) * (1 - norm);
           p.vx += (dx / dist) * force;
           p.vy += (dy / dist) * force;
         }
