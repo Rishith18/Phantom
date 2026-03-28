@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 
+/** Tight layout: equal visual margins, no empty band on the right */
 function ArchitectureDiagram() {
   const stroke = "rgba(42, 42, 42, 0.22)";
   const strokeStrong = "rgba(42, 42, 42, 0.35)";
@@ -9,17 +10,43 @@ function ArchitectureDiagram() {
   const text = "#2A2A2A";
   const accent = "#5A8A5A";
 
+  const pad = 28;
+  const gap = 22;
+  const w = 112;
+  const h = 54;
+  const rx = 11;
+
+  const c1 = pad;
+  const c2 = pad + w + gap;
+  const c3 = pad + (w + gap) * 2;
+
+  const cx1 = c1 + w / 2;
+  const cx2 = c2 + w / 2;
+  const cx3 = c3 + w / 2;
+
+  const yTop = 26;
+  const yGem = yTop + h + 18;
+  const yOpen = yGem + h + 18;
+  const yCloud = yOpen + h + 16;
+
+  const midYTop = yTop + h / 2;
+  const midOpen = yOpen + h / 2;
+
+  const vbW = c3 + w + pad;
+  const vbH = yCloud + 62 + pad;
+
   return (
-    <figure className="w-full max-w-[720px] mx-auto" aria-label="System architecture flow">
+    <figure className="w-full flex justify-center" aria-label="System architecture flow">
       <svg
-        viewBox="0 0 640 380"
-        className="w-full h-auto drop-shadow-sm"
+        viewBox={`0 0 ${vbW} ${vbH}`}
+        className="w-full max-w-[min(100%,520px)] h-auto drop-shadow-sm"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          <filter id="arch-soft" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="arch-soft" x="-25%" y="-25%" width="150%" height="150%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#2A2A2A" floodOpacity="0.06" />
           </filter>
           <marker id="arch-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
@@ -27,38 +54,29 @@ function ArchitectureDiagram() {
           </marker>
         </defs>
 
-        {/* Arrows (under nodes) */}
         <g stroke={stroke} strokeWidth="1.25" fill="none" markerEnd="url(#arch-arrow)">
-          <path d="M118 52 H188" />
-          <path d="M278 52 H348" />
-          <path d="M393 76 V112" />
-          <path d="M393 160 V196" />
-          <path d="M393 244 V286" />
-          <path d="M348 220 H118" />
-          <path d="M73 196 V76" />
+          <path d={`M${c1 + w} ${midYTop} H${c2}`} />
+          <path d={`M${c2 + w} ${midYTop} H${c3}`} />
+          <path d={`M${cx3} ${yTop + h} V${yGem}`} />
+          <path d={`M${cx3} ${yGem + h} V${yOpen}`} />
+          <path d={`M${cx3} ${yOpen + h} V${yCloud}`} />
+          <path d={`M${c3} ${midOpen} H${c1 + w}`} />
+          <path d={`M${cx1} ${yOpen} V${yTop + h}`} />
         </g>
 
-        {/* Nodes */}
         <g filter="url(#arch-soft)">
-          <rect x="28" y="28" width="90" height="48" rx="10" fill={fill} stroke={strokeStrong} strokeWidth="1" />
-          <rect x="188" y="28" width="90" height="48" rx="10" fill={fill} stroke={strokeStrong} strokeWidth="1" />
-          <rect x="348" y="28" width="90" height="48" rx="10" fill={fill} stroke={strokeStrong} strokeWidth="1" />
-          <rect x="348" y="112" width="90" height="48" rx="10" fill={fill} stroke={strokeStrong} strokeWidth="1" />
-          <rect x="348" y="196" width="90" height="48" rx="10" fill={fill} stroke={strokeStrong} strokeWidth="1" />
-          <rect x="28" y="196" width="90" height="48" rx="10" fill={fill} stroke={accent} strokeWidth="1.5" strokeOpacity="0.55" />
+          <rect x={c1} y={yTop} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
+          <rect x={c2} y={yTop} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
+          <rect x={c3} y={yTop} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
+          <rect x={c3} y={yGem} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
+          <rect x={c3} y={yOpen} width={w} height={h} rx={rx} fill={fill} stroke={strokeStrong} strokeWidth="1" />
+          <rect x={c1} y={yOpen} width={w} height={h} rx={rx} fill={fill} stroke={accent} strokeWidth="1.5" strokeOpacity="0.55" />
         </g>
 
-        {/* Glasses — subtle cue for wearable capture */}
-        <g transform="translate(248, 42)" stroke={text} strokeWidth="1.1" strokeLinecap="round" opacity="0.4">
-          <circle cx="8" cy="5" r="4" fill="none" />
-          <circle cx="20" cy="5" r="4" fill="none" />
-          <path d="M12 5h4M4 5H1M27 5h3" />
-        </g>
-
-        {/* Cloud — External Apps */}
-        <g transform="translate(318, 268)">
+        {/* Cloud — sized to fit label */}
+        <g transform={`translate(${cx3 - 78}, ${yCloud})`}>
           <path
-            d="M52 36c-8 0-15-5-17-12-10 0-18-7-18-16 0-9 7-16 16-16h78c11 0 20 8 20 18 0 7-4 13-10 16 2 3 3 6 3 10 0 11-9 20-20 20H52z"
+            d="M78 28c-6 0-11-4-13-9-8 0-14-6-14-13s6-13 14-13h62c9 0 16 7 16 15 0 6-3 11-8 13 1 2 2 5 2 8 0 9-7 16-16 16H78z"
             fill={fill}
             stroke={strokeStrong}
             strokeWidth="1"
@@ -66,83 +84,39 @@ function ArchitectureDiagram() {
           />
         </g>
 
-        <text
-          x="73"
-          y="56"
-          textAnchor="middle"
-          fill={text}
-          fontSize="12"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          User
-        </text>
-        <text
-          x="233"
-          y="56"
-          textAnchor="middle"
-          fill={text}
-          fontSize="11"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          A/V Input
-        </text>
-        <text
-          x="393"
-          y="56"
-          textAnchor="middle"
-          fill={text}
-          fontSize="10"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          Meta DAT SDK
-        </text>
-        <text
-          x="393"
-          y="140"
-          textAnchor="middle"
-          fill={text}
-          fontSize="11"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          Gemini Live
-        </text>
-        <text
-          x="393"
-          y="224"
-          textAnchor="middle"
-          fill={text}
-          fontSize="11"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          OpenClaw
-        </text>
-        <text
-          x="73"
-          y="224"
-          textAnchor="middle"
-          fill={text}
-          fontSize="11"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          Voice Agent
-        </text>
-        <text
-          x="393"
-          y="312"
-          textAnchor="middle"
-          fill={text}
-          fontSize="11"
-          fontWeight="600"
-          fontFamily="system-ui, sans-serif"
-        >
-          External Apps
-        </text>
+        <g fontFamily="system-ui, -apple-system, sans-serif" fontWeight="600" fill={text} textAnchor="middle">
+          <text x={cx1} y={midYTop + 4} fontSize="12">
+            User
+          </text>
+          <text x={cx2} y={midYTop - 3} fontSize="10">
+            <tspan x={cx2} dy="0">
+              Audio / Video
+            </tspan>
+            <tspan x={cx2} dy="12">
+              Input
+            </tspan>
+          </text>
+          <text x={cx3} y={midYTop - 3} fontSize="9.5">
+            <tspan x={cx3} dy="0">
+              Meta DAT
+            </tspan>
+            <tspan x={cx3} dy="11">
+              SDK
+            </tspan>
+          </text>
+          <text x={cx3} y={yGem + h / 2 + 4} fontSize="11">
+            Gemini Live
+          </text>
+          <text x={cx3} y={yOpen + h / 2 + 4} fontSize="11">
+            OpenClaw
+          </text>
+          <text x={cx1} y={yOpen + h / 2 + 4} fontSize="11">
+            Voice Agent
+          </text>
+          <text x={cx3} y={yCloud + 36} fontSize="10.5">
+            External Apps
+          </text>
+        </g>
       </svg>
     </figure>
   );
@@ -177,7 +151,7 @@ export default function TechStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="rounded-2xl border border-phantom-text/10 bg-white/40 px-4 py-8 sm:px-8 backdrop-blur-[2px]"
+          className="rounded-2xl border border-phantom-text/10 bg-white/40 px-4 py-8 sm:px-10 backdrop-blur-[2px] flex justify-center"
         >
           <ArchitectureDiagram />
         </motion.div>
